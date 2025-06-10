@@ -4,6 +4,8 @@ model Position {
 
   Candidate Candidate[]
   Vote      Vote[]
+  Election Election @relation(fields: [electionId], references: [id])
+  electionId String
 }
 
 model Candidate {

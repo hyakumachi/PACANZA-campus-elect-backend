@@ -27,7 +27,8 @@ model Election {
   createdAt DateTime @default(now())
 
   Votes Vote[]
-
+  Positions Position[]
+  
   @@index([isActive])
 }
  
