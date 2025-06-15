@@ -27,13 +27,74 @@ async function seedElections() {
     })
 }
 
+async function seedStudents() {
+    await prisma.student.upsert({
+        where: { studentId: 'STUDENT_1'},
+        update: {},
+        create: {
+            studentId: 'STUDENT_1',
+            email: 'mscmacapagal@addu.edu.ph',
+            name: 'Matthew Sean C. Macapagal',
+            department: 'School of Engineering and Architecture'
+        }
+    })
+
+    await prisma.student.upsert({
+        where: { studentId: 'STUDENT_2'},
+        update: {},
+        create: {
+            studentId: 'STUDENT_2',
+            email: 'kkbkawasaki@addu.edu.ph',
+            name: 'Kazumiya Ken B. Kawasaki',
+            department: 'Computer Studies'
+        }
+    })
+
+    await prisma.student.upsert({
+        where: { studentId: 'STUDENT_3'},
+        update: {},
+        create: {
+            studentId: 'STUDENT_3',
+            email: 'blspacanza@addu.edu.ph',
+            name: 'Bernard Louie S. Pacanza',
+            department: 'Computer Studies'
+        }
+    })
+}
+
+async function seedCandidates() {
+    await prisma.candidate.upsert({
+        where: { candidateId: 'CANDIDATE_1' },
+        update: {},
+        create: {
+            candidateId: 'CANDIDATE_1',
+            positionId: PRESIDENT25_ID, 
+            studentId: 'STUDENT_1'     
+        }
+    });
+
+    await prisma.candidate.upsert({
+        where: { candidateId: 'CANDIDATE_2' },
+        update: {},
+        create: {
+            candidateId: 'CANDIDATE_2',
+            positionId: PRESIDENT25_ID, 
+            studentId: 'STUDENT_2'      
+        }
+    });
+}
+
 const prisma = new PrismaClient();
 const PRESIDENT25_ID = "election-2025-president";
+
+
 
 async function main() {
     console.log("SEEDING DATABASE...");
 
     await seedElections();
+    await seedStudents();
+    await seedCandidates();
 
     console.log("FINISHED SEEDING");
 }
