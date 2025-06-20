@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UsersService } from 'src/users/users.service';
 import { ReturnedStudentDto } from 'src/users/dto/students.dto';
@@ -21,7 +21,18 @@ export class UsersController {
         type: [ReturnedStudentDto]
         
     })
+
     async findAllStudents(): Promise<Student[]> {
         return await this.usersService.findAllStudents();
+    }
+
+    @Get('students/find')
+    async findStudentById(
+        @Query('id') id: Student['studentId']
+    ) {
+        
+        return await this.usersService.findStudentById({ 
+            id: id
+        })
     }
 }
