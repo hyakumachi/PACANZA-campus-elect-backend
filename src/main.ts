@@ -8,18 +8,17 @@ async function bootstrap() {
   const PORT = process.env.PORT ?? 3001;
 
   const config = new DocumentBuilder()
-  .setTitle('Campus Elect Backend')
-  .setDescription('API documentation for the Campus Elect application')
-  .setVersion('1.0')
-  .build();
-
+    .setTitle('Campus Elect Backend')
+    .setDescription('API documentation for the Campus Elect application')
+    .setVersion('1.0')
+    .build();
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, documentFactory);
 
   await app.listen(PORT);
 
-  console.log(`RUNNING ON http://localhost:${PORT}`)
+  console.log(`RUNNING ON http://localhost:${PORT}`);
 }
 
 void bootstrap();
