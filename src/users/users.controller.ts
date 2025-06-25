@@ -1,18 +1,15 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Query,
-  HttpCode,
-  HttpStatus,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import {
   ApiNotFoundResponse,
   ApiOperation,
   ApiQuery,
   ApiResponse,
   ApiConflictResponse,
+  ApiBadRequestResponse,
+  ApiInternalServerErrorResponse,
+  ApiUnauthorizedResponse,
+  ApiForbiddenResponse,
+  ApiCreatedResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { UsersService } from 'src/users/users.service';
@@ -67,18 +64,49 @@ export class UsersController {
     });
   }
 
+  /**
+   * Creates a new student.
+   *
+   * @param createStudentDto - The student data from the request body.
+   * @returns The created student object.
+   *
+   * Status codes:
+   * - 201: Student created successfully
+   * - 400: Bad request (invalid or missing data)
+   * - 401: Unauthorized (authentication required)
+   * - 403: Forbidden (not enough permissions)
+   * - 404: Related resource not found (e.g., department missing)
+   * - 409: Conflict (student with ID already exists)
+   * - 500: Server error
+   */
   @Post('students')
   @ApiOperation({
     summary: 'Create a new student',
     description: 'Creates a new student with the provided details.',
   })
-  @ApiResponse({
-    status: 201,
+  @ApiCreatedResponse({
     description: 'Student created successfully.',
     type: ReturnedStudentDto,
   })
+  @ApiBadRequestResponse({
+    description:
+      'Bad request. Invalid or missing data in the request body. (Wrong format, missing fields, etc.)',
+  })
+  @ApiUnauthorizedResponse({
+    description:
+      'Unauthorized. Authentication is required to create a student.',
+  })
+  @ApiForbiddenResponse({
+    description: 'Forbidden. You do not have permission to create a student.',
+  })
   @ApiConflictResponse({
-    description: 'Student with this ID already exists.',
+    description: 'Conflict. Student with this ID already exists.',
+  })
+  @ApiNotFoundResponse({
+    description: 'Student not found or does not exist.',
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Internal server error. Something went wrong on the server.',
   })
   async createStudent(
     @Body() createStudentDto: CreateStudentDto,
